@@ -108,7 +108,9 @@ class PlaceRepositoryImpl @Inject constructor(
         return PlaceEntity(
             id = fsqId,
             name = name,
-            address = location?.formattedAddress ?: location?.address ?: "No address"
+            address = location?.formattedAddress ?: location?.address ?: "No address",
+            rating = rating,
+            category = categories?.firstOrNull()?.name
         )
     }
 }
