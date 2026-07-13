@@ -44,13 +44,15 @@ The app follows Clean Architecture with three layers:
  | 
 
 ![Detail](
-<img width="1080" height="2265" alt="Screenshot_20260713_141333_NearMe" src="https://github.com/user-attachments/assets/b1b73449-513e-43dc-9cb1-f2796a2a9a6f" />
+<img width="1080" height="2265" alt="Screenshot_20260713_141333_NearMe" src="https://github.com/user-attachments/assets/44d03023-c9f0-4612-808d-40c26bbd276b" />
+
 )
 
  | 
 
 ![Favorites](
-<img width="1080" height="2265" alt="Screenshot_20260713_141352_NearMe" src="https://github.com/user-attachments/assets/b2e16498-1e50-4922-933a-90d1b8a671d4" />
+<img width="1080" height="2265" alt="Screenshot_20260713_141352_NearMe" src="https://github.com/user-attachments/assets/a7ec24ec-ec96-4553-85a8-6404d9b5138f" />
+
 )
 
  |
