@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -53,12 +54,19 @@ fun HomeScreen(
                     placeholder = { Text("Find coffee, parks, art...") },
                     leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
                     shape = RoundedCornerShape(16.dp),
+                    singleLine = true,
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = MaterialTheme.colorScheme.surface,
                         unfocusedContainerColor = MaterialTheme.colorScheme.surface,
                         focusedIndicatorColor = MaterialTheme.colorScheme.primary,
                         unfocusedIndicatorColor = MaterialTheme.colorScheme.outlineVariant
                     )
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                CategoryChips(
+                    categories = listOf("Food", "Entertainment", "Outdoors", "Shopping", "Education", "Coffee"),
+                    selectedCategory = state.searchQuery,
+                    onCategoryClick = viewModel::onCategorySelected
                 )
             }
         }
@@ -101,6 +109,35 @@ fun HomeScreen(
             ) {
                 LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
             }
+        }
+    }
+}
+
+@Composable
+fun CategoryChips(
+    categories: List<String>,
+    selectedCategory: String,
+    onCategoryClick: (String) -> Unit
+) {
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = PaddingValues(horizontal = 4.dp)
+    ) {
+        items(categories) { category ->
+            val isSelected = category.equals(selectedCategory, ignoreCase = true)
+            FilterChip(
+                selected = isSelected,
+                onClick = { onCategoryClick(category) },
+                label = { Text(category) },
+                shape = RoundedCornerShape(12.dp),
+                colors = FilterChipDefaults.filterChipColors(
+                    selectedContainerColor = MaterialTheme.colorScheme.primary,
+                    selectedLabelColor = MaterialTheme.colorScheme.onPrimary,
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                    labelColor = MaterialTheme.colorScheme.onSurfaceVariant
+                ),
+                border = null
+            )
         }
     }
 }

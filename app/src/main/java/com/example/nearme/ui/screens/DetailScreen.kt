@@ -60,11 +60,9 @@ fun DetailScreen(
                     CircularProgressIndicator()
                 }
             } else if (state.error != null) {
-                ErrorMessage(
-                    message = state.error!!,
-                    onRetry = { viewModel.retry() },
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                )
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text(text = state.error ?: "Unknown Error", color = MaterialTheme.colorScheme.error)
+                }
             } else {
                 state.place?.let { place ->
                     // Photo Gallery

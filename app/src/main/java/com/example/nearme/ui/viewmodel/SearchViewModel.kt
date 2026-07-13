@@ -42,6 +42,12 @@ class SearchViewModel @Inject constructor(
         }
     }
 
+    fun onCategorySelected(category: String) {
+        _state.update { it.copy(searchQuery = category, error = null) }
+        searchJob?.cancel()
+        searchPlaces(category)
+    }
+
     fun searchPlaces(query: String, latLng: String? = null) {
         searchFlowJob?.cancel()
         searchFlowJob = repository.getPlaces(query, latLng).onEach { result ->
