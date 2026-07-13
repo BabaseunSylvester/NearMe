@@ -106,6 +106,30 @@ fun DetailScreen(
                                 )
                             }
                         }
+                    } else {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(200.dp)
+                                .padding(horizontal = 16.dp)
+                                .clip(RoundedCornerShape(24.dp))
+                                .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Icon(
+                                    Icons.Default.Info,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(48.dp),
+                                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f)
+                                )
+                                Text(
+                                    "No photos available",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                                )
+                            }
+                        }
                     }
 
                     Column(modifier = Modifier.padding(24.dp)) {
@@ -122,39 +146,37 @@ fun DetailScreen(
                                         letterSpacing = (-0.5).sp
                                     )
                                 )
-                                if (place.categories?.isNotEmpty() == true) {
-                                    Text(
-                                        text = place.categories.joinToString { it.name ?: "" },
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.primary,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                }
+                                Text(
+                                    text = if (place.categories?.isNotEmpty() == true) 
+                                        place.categories.joinToString { it.name ?: "" }
+                                    else "Local Interest",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    fontWeight = FontWeight.Bold
+                                )
                             }
                             
-                            if (place.rating != null) {
-                                Surface(
-                                    color = MaterialTheme.colorScheme.primaryContainer,
-                                    shape = RoundedCornerShape(12.dp)
+                            Surface(
+                                color = if (place.rating != null) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceVariant,
+                                shape = RoundedCornerShape(12.dp)
+                            ) {
+                                Row(
+                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                                    verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Row(
-                                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Icon(
-                                            Icons.Default.Star,
-                                            contentDescription = null,
-                                            modifier = Modifier.size(16.dp),
-                                            tint = MaterialTheme.colorScheme.primary
-                                        )
-                                        Spacer(modifier = Modifier.width(4.dp))
-                                        Text(
-                                            text = place.rating.toString(),
-                                            style = MaterialTheme.typography.titleSmall,
-                                            fontWeight = FontWeight.Bold,
-                                            color = MaterialTheme.colorScheme.onPrimaryContainer
-                                        )
-                                    }
+                                    Icon(
+                                        Icons.Default.Star,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(16.dp),
+                                        tint = if (place.rating != null) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                    Spacer(modifier = Modifier.width(4.dp))
+                                    Text(
+                                        text = place.rating?.toString() ?: "New",
+                                        style = MaterialTheme.typography.titleSmall,
+                                        fontWeight = FontWeight.Bold,
+                                        color = if (place.rating != null) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
                                 }
                             }
                         }
@@ -166,22 +188,20 @@ fun DetailScreen(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
-                            if (!place.tel.isNullOrBlank()) {
-                                DetailActionButton(
-                                    icon = Icons.Default.Phone,
-                                    label = "Call",
-                                    onClick = { dialNumber(place.tel) },
-                                    modifier = Modifier.weight(1f)
-                                )
-                            }
-                            if (!place.website.isNullOrBlank()) {
-                                DetailActionButton(
-                                    icon = Icons.Default.Info,
-                                    label = "Website",
-                                    onClick = { openUrl(place.website) },
-                                    modifier = Modifier.weight(1f)
-                                )
-                            }
+                            DetailActionButton(
+                                icon = Icons.Default.Phone,
+                                label = "Call",
+                                onClick = { place.tel?.let { dialNumber(it) } },
+                                enabled = !place.tel.isNullOrBlank(),
+                                modifier = Modifier.weight(1f)
+                            )
+                            DetailActionButton(
+                                icon = Icons.Default.Info,
+                                label = "Website",
+                                onClick = { place.website?.let { openUrl(it) } },
+                                enabled = !place.website.isNullOrBlank(),
+                                modifier = Modifier.weight(1f)
+                            )
                         }
 
                         Spacer(modifier = Modifier.height(24.dp))
@@ -191,39 +211,38 @@ fun DetailScreen(
                             text = place.location?.formattedAddress ?: "No address available"
                         )
 
-                        if (!place.description.isNullOrBlank()) {
-                            Spacer(modifier = Modifier.height(32.dp))
-                            Text(
-                                text = "About this place",
-                                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(
-                                text = place.description,
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                lineHeight = 22.sp
-                            )
-                        }
+                        Spacer(modifier = Modifier.height(32.dp))
+                        Text(
+                            text = "About this place",
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = if (!place.description.isNullOrBlank()) place.description 
+                                else "Experience the unique charm of this location. A wonderful spot in the heart of the city, offering a memorable atmosphere for all visitors.",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            lineHeight = 22.sp
+                        )
 
-                        if (place.tastes?.isNotEmpty() == true) {
-                            Spacer(modifier = Modifier.height(24.dp))
-                            Text(
-                                text = "What people love",
-                                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            FlowRow(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                verticalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                place.tastes.forEach { taste ->
-                                    SuggestionChip(
-                                        onClick = { },
-                                        label = { Text(taste) }
-                                    )
-                                }
+                        Spacer(modifier = Modifier.height(24.dp))
+                        Text(
+                            text = "Highlights",
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        FlowRow(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            val tags = if (place.tastes?.isNotEmpty() == true) place.tastes 
+                                        else listOf("Authentic", "Scenic", "Local Favorite")
+                            tags.forEach { taste ->
+                                SuggestionChip(
+                                    onClick = { },
+                                    label = { Text(taste) }
+                                )
                             }
                         }
                     }
@@ -238,11 +257,13 @@ fun DetailActionButton(
     icon: ImageVector,
     label: String,
     onClick: () -> Unit,
+    enabled: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     OutlinedButton(
         onClick = onClick,
         modifier = modifier,
+        enabled = enabled,
         shape = RoundedCornerShape(12.dp),
         contentPadding = PaddingValues(12.dp)
     ) {
