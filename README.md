@@ -35,7 +35,7 @@ _Coming soon_
 
 ## Getting Started
 1. Clone the repo
-2. Add your Foursquare API key to `local.properties`: FOURSQUARE_API_KEY=your_key_here
+2. Add your Foursquare API key to `local.properties`: API_SERVICE_KEY=your_key_here
 3. Build and run on Android Studio Hedgehog or later
 
 ## Requirements
