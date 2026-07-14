@@ -57,6 +57,9 @@ The app follows Clean Architecture with three layers:
 
  |
 
+## Demo Video
+https://youtube.com/shorts/5g_k54BT3RU?feature=share
+
 ## Getting Started
 1. Clone the repo
 2. Add your Foursquare API key to `local.properties`: API_SERVICE_KEY=your_key_here
